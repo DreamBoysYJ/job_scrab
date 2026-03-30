@@ -8,6 +8,7 @@ from pathlib import Path
 
 from telegram import Bot
 from telegram.error import TelegramError
+from telegram.request import HTTPXRequest
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +83,9 @@ async def send_notification(
         return False
 
     try:
-        bot = Bot(token=bot_token)
+        # 타임아웃 설정 (GitHub Actions 환경에서 필요)
+        request = HTTPXRequest(connect_timeout=60.0, read_timeout=60.0)
+        bot = Bot(token=bot_token, request=request)
 
         # 결과가 없는 경우
         if not jobs:
