@@ -1,0 +1,70 @@
+name: Daily Job Scraping
+
+on:
+  # 매일 UTC 자정 (KST 오전 9시) 실행
+  schedule:
+    - cron: '0 0 * * *'
+
+  # 수동 실행 가능
+  workflow_dispatch:
+    inputs:
+      sites:
+        description: '스크래핑할 사이트 (공백으로 구분, 비워두면 전체)'
+        required: false
+        default: ''
+      dry_run:
+        description: '테스트 모드 (스크래핑만, 알림 X)'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run scraper
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          # 인자 구성
+          ARGS=""
+
+          # 특정 사이트만 스크래핑
+          if [ -n "${{ github.event.inputs.sites }}" ]; then
+            ARGS="$ARGS --sites ${{ github.event.inputs.sites }}"
+          fi
+
+          # 테스트 모드
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          # 엑셀 저장 비활성화 (GitHub Actions에서는 불필요)
+          ARGS="$ARGS --no-excel"
+
+          python main.py $ARGS
+
+      - name: Upload logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-logs-${{ github.run_number }}
+          path: |
+            *.log
+          retention-days: 7
