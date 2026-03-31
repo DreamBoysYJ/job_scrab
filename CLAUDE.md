@@ -67,33 +67,7 @@ python main.py
 
 ## 구현 진행 상황
 
-### 1단계: 프로젝트 기본 설정 ✅
-- [x] 프로젝트 구조 생성
-- [x] requirements.txt 작성
-- [x] keywords.yaml 설정 파일 생성
-
-### 2단계: 스크래퍼 구현 ✅
-- [x] base.py - 공통 스크래퍼 인터페이스
-- [x] wanted.py - 원티드
-- [x] jobkorea.py - 잡코리아
-- [x] saramin.py - 사람인
-- [x] catch.py - 캐치
-- [x] jasoseol.py - 자소설닷컴
-- [x] rocketpunch.py - 로켓펀치
-- [ ] linkedin.py - 링크드인 (선택, 제한적)
-
-### 3단계: 유틸리티 ✅
-- [x] excel.py - 엑셀 저장
-- [x] keywords.py - 키워드 읽기
-- [x] telegram.py - 텔레그램 알림
-
-### 4단계: 메인 & 통합 ✅
-- [x] main.py - 메인 실행 파일
-- [x] 로컬 테스트
-
-### 5단계: GitHub Actions ✅
-- [x] daily_scrape.yml
-- [x] Secrets 설정 가이드 (.github/workflows/CLAUDE.md)
+👉 [PROGRESS.md](PROGRESS.md) 참조
 
 ## 주의사항
 - 각 사이트 robots.txt 및 이용약관 확인

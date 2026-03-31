@@ -6,7 +6,9 @@
       "Bash(pip install:*)",
       "Bash(python main.py:*)",
       "Bash(python verify_results.py:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "WebFetch(domain:api.telegram.org)",
+      "Bash(curl -s \"https://api.telegram.org/bot8700572881:AAFR7FeiHHcJS6mjoIPwrkD42QZsG40tnl4/getUpdates\")"
     ]
   }
 }

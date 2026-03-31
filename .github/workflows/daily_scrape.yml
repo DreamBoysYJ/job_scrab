@@ -55,9 +55,6 @@ jobs:
             ARGS="$ARGS --dry-run"
           fi
 
-          # 엑셀 저장 비활성화 (GitHub Actions에서는 불필요)
-          ARGS="$ARGS --no-excel"
-
           python main.py $ARGS
 
       - name: Upload logs (on failure)
