@@ -114,7 +114,13 @@ async def main_async(args):
     # 1. 키워드 설정 로드
     logger.info("키워드 설정 로드 중...")
     config = load_keywords()
-    keywords = config.get("keywords", [])
+
+    # CLI에서 키워드가 제공되면 우선 사용
+    if args.keywords:
+        keywords = args.keywords
+        logger.info(f"CLI 키워드 사용: {', '.join(keywords)}")
+    else:
+        keywords = config.get("keywords", [])
 
     if not keywords:
         logger.error("검색할 키워드가 없습니다. config/keywords.yaml을 확인하세요.")
@@ -200,6 +206,7 @@ def main():
 예시:
   python main.py                          # 전체 사이트 스크래핑
   python main.py --sites wanted saramin   # 특정 사이트만
+  python main.py --keywords 블록체인 백엔드  # 특정 키워드로 검색
   python main.py --no-telegram            # 텔레그램 알림 없이
   python main.py --dry-run                # 테스트 모드 (저장/알림 X)
   python main.py -v                       # 상세 로그 출력
@@ -212,6 +219,11 @@ def main():
         "--sites", "-s",
         nargs="+",
         help="스크래핑할 사이트 목록 (기본: 전체)"
+    )
+    parser.add_argument(
+        "--keywords", "-k",
+        nargs="+",
+        help="검색 키워드 목록 (기본: config/keywords.yaml에서 로드)"
     )
     parser.add_argument(
         "--no-telegram",

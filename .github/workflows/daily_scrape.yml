@@ -8,6 +8,10 @@ on:
   # 수동 실행 가능
   workflow_dispatch:
     inputs:
+      keywords:
+        description: '검색 키워드 (공백으로 구분, 비워두면 config/keywords.yaml 사용)'
+        required: false
+        default: ''
       sites:
         description: '스크래핑할 사이트 (공백으로 구분, 비워두면 전체)'
         required: false
@@ -44,6 +48,11 @@ jobs:
         run: |
           # 인자 구성
           ARGS=""
+
+          # 키워드 지정
+          if [ -n "${{ github.event.inputs.keywords }}" ]; then
+            ARGS="$ARGS --keywords ${{ github.event.inputs.keywords }}"
+          fi
 
           # 특정 사이트만 스크래핑
           if [ -n "${{ github.event.inputs.sites }}" ]; then
