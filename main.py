@@ -8,6 +8,7 @@
     python main.py --no-telegram      # 텔레그램 알림 없이
     python main.py --dry-run          # 스크래핑만 (저장/알림 X)
 """
+# 배포 스킬 테스트
 import argparse
 import asyncio
 import logging
